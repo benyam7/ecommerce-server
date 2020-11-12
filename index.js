@@ -2,21 +2,9 @@ require('dotenv').config();
 const { ApolloServer } = require('apollo-server');
 const mongoose = require('mongoose');
 
-const { gql } = require('apollo-server');
+const schema = require('./src/schema');
+const resolvers = require('./src/resolvers');
 
-const schema = gql`
-  type Query {
-    test: String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    async test(parent, args, context) {
-      return 'working';
-    },
-  },
-};
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
