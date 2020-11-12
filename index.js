@@ -4,10 +4,15 @@ const mongoose = require('mongoose');
 
 const schema = require('./src/schema');
 const resolvers = require('./src/resolvers');
+const models = require('./src/models');
 
+const PORT = process.env.PORT || 5000;
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
+  context: {
+    models,
+  },
 });
 
 const connect = async () => {
@@ -15,7 +20,7 @@ const connect = async () => {
     await mongoose.connect(process.env.MONGO_CONN, {
       useNewUrlParser: true,
     });
-    server.listen({ port: 5000 });
+    server.listen({ port: PORT });
     console.log('connected to db');
   } catch (err) {
     console.log('Failed to connect to DB', err);
