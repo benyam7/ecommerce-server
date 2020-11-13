@@ -80,4 +80,9 @@ module.exports = gql`
     message: String!
     type: String
   }
+
+  type GetItemError implements Error {
+    message: String!
+    type: String
+  }
 `;

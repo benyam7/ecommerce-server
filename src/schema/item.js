@@ -11,6 +11,9 @@ module.exports = gql`
     ): EditItemResult!
   }
   # queries
+  extend type Query {
+    item(itemId: ID!): ItemResult!
+  }
   #   inputs
   input ItemInput {
     name: String!
@@ -65,4 +68,10 @@ module.exports = gql`
     | ItemNotOwnerError
     | ItemDoesntExistError
     | ItemInputErrors
+
+  union ItemResult =
+      Item
+    | NotAuthenticatedUserError
+    | ItemDoesntExistError
+    | GetItemError
 `;

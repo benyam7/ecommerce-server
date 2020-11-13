@@ -11,6 +11,38 @@ const validateItem = async (itemId, itemModel, currentUser) => {
 };
 
 module.exports = {
+  Query: {
+    item: combineResolvers(
+      isAuthenitcated,
+      async (_, { itemId }, { models: { Item } }) => {
+        try {
+          const item = await Item.findById(itemId).populate('vendor');
+          console.log(item);
+          if (!item) {
+            return {
+              __typename: 'ItemDoesntExistError',
+              message: 'Item you requested to does not exist',
+              type: 'ItemDoesntExistError',
+            };
+          }
+
+          console.log(item);
+          return {
+            __typename: 'Item',
+            id: item._doc._id,
+            ...item._doc,
+          };
+        } catch (e) {
+          console.log(e);
+          return {
+            __typename: 'GetItemError',
+            type: 'GetItemError',
+            message: `${e}`,
+          };
+        }
+      },
+    ),
+  },
   Mutation: {
     async addItem(_, { newItem }, { models: { Item } }) {},
 
