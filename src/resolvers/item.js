@@ -6,10 +6,6 @@ const {
 } = require('./authorization.js');
 const { validateItemInput } = require('../util/validators.js');
 
-const validateItem = async (itemId, itemModel, currentUser) => {
-  return item;
-};
-
 module.exports = {
   Query: {
     item: combineResolvers(
@@ -37,6 +33,26 @@ module.exports = {
           return {
             __typename: 'GetItemError',
             type: 'GetItemError',
+            message: `${e}`,
+          };
+        }
+      },
+    ),
+
+    items: combineResolvers(
+      isAuthenitcated,
+      async (_, __, { models: { Item } }) => {
+        try {
+          const items = await Item.find().populate('vendor');
+
+          return {
+            __typename: 'Items',
+            items,
+          };
+        } catch (e) {
+          return {
+            __typename: 'GetItemsError',
+            type: 'GetItemsError',
             message: `${e}`,
           };
         }

@@ -13,6 +13,7 @@ module.exports = gql`
   # queries
   extend type Query {
     item(itemId: ID!): ItemResult!
+    items: ItemsResult!
   }
   #   inputs
   input ItemInput {
@@ -47,6 +48,10 @@ module.exports = gql`
     message: String!
   }
 
+  type Items {
+    items: [Item!]
+  }
+
   # results
   union AddItemResult =
       Item
@@ -74,4 +79,9 @@ module.exports = gql`
     | NotAuthenticatedUserError
     | ItemDoesntExistError
     | GetItemError
+
+  union ItemsResult =
+      Items
+    | NotAuthenticatedUserError
+    | GetItemsError
 `;
