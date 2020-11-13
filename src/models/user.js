@@ -7,7 +7,6 @@ const userSchema = new Schema({
   email: String,
   role: String,
   password: String,
-  confirmPassword: String,
   createdAt: String,
 });
 
@@ -15,8 +14,8 @@ userSchema.statics.hashPassword = function (password) {
   return bycrpt.hash(password, 10);
 };
 
-userSchema.statics.compareHash = function (expected, acctual) {
-  return bycrpt.compareHash(acctual, expected);
+userSchema.statics.compareHash = function (acctual, expected) {
+  return bycrpt.compare(acctual, expected);
 };
 
 module.exports = model('User', userSchema);

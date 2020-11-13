@@ -1,6 +1,8 @@
 const {
   validateRegisterUserInput,
+  validateLoginInput,
 } = require('../util/validators.js');
+
 const { createToken } = require('../util/helpers.js');
 
 module.exports = {
@@ -25,7 +27,7 @@ module.exports = {
           lastName,
           role,
         );
-        console.log(userInputErrors);
+
         if (!valid) {
           return {
             __typename: 'UserInputError',
@@ -83,6 +85,64 @@ module.exports = {
           __typename: 'RegisterError',
           type: `${err}`,
           message: 'Unable to sign up please try again',
+        };
+      }
+    },
+
+    async login(
+      _,
+      { email, password },
+      { models: { User }, secret },
+    ) {
+      try {
+        // validate login input
+        const { userInputErrors, valid } = validateLoginInput(
+          email,
+          password,
+        );
+
+        console.log(userInputErrors);
+
+        if (!valid) {
+          return {
+            __typename: 'UserInputError',
+            message: 'Invalid Input!',
+            type: 'UserInputError',
+            userInputErrors,
+            valid,
+          };
+        }
+
+        // see if user exists
+        const user = await User.findOne({ email });
+        if (!user) {
+          return {
+            __typename: 'LogInError',
+            message: 'User not found',
+            type: 'LogInError',
+          };
+        }
+
+        // compare password
+        const match = await User.compareHash(password, user.password);
+
+        if (!match) {
+          return {
+            __typename: 'LogInError',
+            message: 'Wrong credentials',
+            type: 'LogInError',
+          };
+        }
+
+        return {
+          __typename: 'Token',
+          token: await createToken(user, secret, '30m'),
+        };
+      } catch (err) {
+        return {
+          __typename: 'LogInError',
+          type: `${err}`,
+          message: 'Unable to sign in, please try',
         };
       }
     },

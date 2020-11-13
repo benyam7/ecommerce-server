@@ -5,8 +5,8 @@ module.exports = gql`
     message: String!
     type: String
   }
-  #   user errors
 
+  #   user errors
   type UserInputError implements Error {
     message: String!
     type: String
@@ -31,5 +31,10 @@ module.exports = gql`
     lastName: String
     confirmPassword: String
     role: String
+  }
+
+  type LogInError implements Error {
+    message: String!
+    type: String
   }
 `;
