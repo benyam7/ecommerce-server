@@ -77,25 +77,27 @@ module.exports.validateItemInput = (
   description,
 ) => {
   const itemInputErrors = {};
-  if (name.trim() === '') {
+  if (name && name.trim() === '') {
     itemInputErrors.name = 'Name must not be empty';
   }
 
-  if (description.trim() === '') {
+  if (description && description.trim() === '') {
     itemInputErrors.description = 'Description must not be empty';
   }
 
-  if (photoUrl.trim() === '') {
+  if (photoUrl && photoUrl.trim() === '') {
     itemInputErrors.photoUrl = 'Photo url must not be empty';
   } else {
-    try {
-      new URL(photoUrl);
-    } catch (e) {
-      itemInputErrors.photoUrl = 'Photo url must be a valid url';
+    if (photoUrl) {
+      try {
+        new URL(photoUrl);
+      } catch (e) {
+        itemInputErrors.photoUrl = 'Photo url must be a valid url';
+      }
     }
   }
 
-  if (price <= 0) {
+  if (price && price <= 0) {
     itemInputErrors.price = 'Price must be greater that zero';
   }
 

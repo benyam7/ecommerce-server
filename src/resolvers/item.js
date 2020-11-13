@@ -134,8 +134,25 @@ module.exports = {
         { updateItem, itemId },
         { models: { Item }, currentUser },
       ) => {
-        const { price, description, name, photoUrl } = updateItem;
         try {
+          const { price, description, name, photoUrl } = updateItem;
+          const {
+            itemError,
+            message,
+            type,
+            valid,
+          } = validateItemInput(name, price, photoUrl, description);
+
+          console.log(itemError);
+          if (!valid) {
+            return {
+              __typename: 'ItemInputErrors',
+              itemError,
+              message,
+              type,
+            };
+          }
+          // validate the new inputs
           // refactor here
           // check if item exists
           const item = await Item.findById(itemId).populate('vendor');

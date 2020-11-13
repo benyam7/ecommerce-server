@@ -64,4 +64,5 @@ module.exports = gql`
     | NotAuthenticatedUserError
     | ItemNotOwnerError
     | ItemDoesntExistError
+    | ItemInputErrors
 `;
