@@ -4,6 +4,7 @@ module.exports = gql`
   # mutations
   extend type Mutation {
     addItem(newItem: ItemInput!): AddItemResult!
+    deleteItem(itemId: ID!): DeleteItemResult!
   }
   # queries
   #   inputs
@@ -15,6 +16,7 @@ module.exports = gql`
   }
   # custom types
   type Item {
+    id: ID!
     name: String!
     price: Float!
     photoUrl: String!
@@ -27,10 +29,21 @@ module.exports = gql`
     lastName: String!
     email: String!
   }
+
+  type DeletionSuccess {
+    message: String!
+  }
   # results
   union AddItemResult =
       Item
     | AddItemError
     | ItemInputErrors
     | NotAuthenticatedUserError
+
+  union DeleteItemResult =
+      DeletionSuccess
+    | DeleteItemError
+    | NotAuthenticatedUserError
+    | ItemNotOwnerError
+    | ItemDoesntExistError
 `;

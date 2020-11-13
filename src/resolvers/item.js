@@ -1,6 +1,9 @@
 const { combineResolvers } = require('graphql-resolvers');
 
-const { isAuthenitcated } = require('./authorization.js');
+const {
+  isAuthenitcated,
+  isItemOwner,
+} = require('./authorization.js');
 const { validateItemInput } = require('../util/validators.js');
 
 module.exports = {
@@ -57,6 +60,7 @@ module.exports = {
 
           return {
             __typename: 'Item',
+            id: res._doc._id,
             name: res._doc.name,
             price: res._doc.price,
             photoUrl: res._doc.photoUrl,
@@ -72,6 +76,47 @@ module.exports = {
             __typename: 'AddItemError',
             type: `${e}`,
             message: 'Unable to add your item please try again',
+          };
+        }
+      },
+    ),
+
+    deleteItem: combineResolvers(
+      isAuthenitcated,
+      async (_, { itemId }, { models: { Item }, currentUser }) => {
+        try {
+          // check if item exists
+          const item = await Item.findById(itemId).populate('vendor');
+
+          if (!item) {
+            return {
+              __typename: 'ItemDoesntExistError',
+              message: 'Item you requested to delete does not exist',
+              type: 'ItemDoesntExistError',
+            };
+          }
+          console.log(item, 'item');
+          console.log(item.vendor.email);
+          // check if current user is item owner
+          if (item.vendor.email !== currentUser.email) {
+            console.log(item.vendor.email);
+            return {
+              __typename: 'ItemNotOwnerError',
+              type: 'ItemNotOwnerError',
+              message: 'Your are not owner of this item',
+            };
+          }
+          // delete item
+          await item.delete();
+          return {
+            __typename: 'DeletionSuccess',
+            message: 'Item successfully deleted',
+          };
+        } catch (err) {
+          return {
+            __typename: 'DeleteItemError',
+            type: `${err}`,
+            message: 'Unable to delete please try again',
           };
         }
       },

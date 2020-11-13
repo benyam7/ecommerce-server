@@ -73,7 +73,7 @@ module.exports = {
           token: createToken(
             {
               id: res._doc._id,
-              ...res,
+              ...res._doc,
             },
             secret,
             '30m',

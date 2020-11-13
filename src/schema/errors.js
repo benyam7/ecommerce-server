@@ -61,4 +61,18 @@ module.exports = gql`
     message: String!
     type: String
   }
+
+  type ItemNotOwnerError implements Error {
+    message: String!
+    type: String
+  }
+
+  type DeleteItemError implements Error {
+    message: String!
+    type: String
+  }
+  type ItemDoesntExistError implements Error {
+    message: String!
+    type: String
+  }
 `;
