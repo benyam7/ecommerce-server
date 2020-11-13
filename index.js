@@ -6,12 +6,14 @@ const schema = require('./src/schema');
 const resolvers = require('./src/resolvers');
 const models = require('./src/models');
 
+const secret = process.env.SECRET;
 const PORT = process.env.PORT || 5000;
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
   context: {
     models,
+    secret,
   },
 });
 

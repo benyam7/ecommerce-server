@@ -36,15 +36,14 @@ module.exports.validateRegisterUserInput = (
     errors.password = 'Password must not empty';
   } else {
     if (password.length < 8) {
-      errors.passwordLength =
-        'Password length must be greater than 8';
+      errors.password = 'Password length must be greater than 8';
     } else if (password !== confirmPassword) {
       errors.confirmPassword = 'Passwords must match';
     }
   }
   return {
     __typename: 'UserInputError',
-    userErrors: errors,
+    userInputErrors: errors,
     type: 'UserInputError',
     valid: Object.keys(errors).length < 1,
   };
