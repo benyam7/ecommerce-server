@@ -5,6 +5,10 @@ module.exports = gql`
   extend type Mutation {
     addItem(newItem: ItemInput!): AddItemResult!
     deleteItem(itemId: ID!): DeleteItemResult!
+    editItem(
+      updateItem: UpdateItemInput!
+      itemId: ID!
+    ): EditItemResult!
   }
   # queries
   #   inputs
@@ -13,6 +17,12 @@ module.exports = gql`
     price: Float!
     photoUrl: String!
     description: String!
+  }
+  input UpdateItemInput {
+    name: String
+    price: Float
+    photoUrl: String
+    description: String
   }
   # custom types
   type Item {
@@ -33,6 +43,7 @@ module.exports = gql`
   type DeletionSuccess {
     message: String!
   }
+
   # results
   union AddItemResult =
       Item
@@ -43,6 +54,13 @@ module.exports = gql`
   union DeleteItemResult =
       DeletionSuccess
     | DeleteItemError
+    | NotAuthenticatedUserError
+    | ItemNotOwnerError
+    | ItemDoesntExistError
+
+  union EditItemResult =
+      Item
+    | EditItemError
     | NotAuthenticatedUserError
     | ItemNotOwnerError
     | ItemDoesntExistError

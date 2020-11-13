@@ -75,4 +75,9 @@ module.exports = gql`
     message: String!
     type: String
   }
+
+  type EditItemError implements Error {
+    message: String!
+    type: String
+  }
 `;

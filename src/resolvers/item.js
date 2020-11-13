@@ -6,6 +6,10 @@ const {
 } = require('./authorization.js');
 const { validateItemInput } = require('../util/validators.js');
 
+const validateItem = async (itemId, itemModel, currentUser) => {
+  return item;
+};
+
 module.exports = {
   Mutation: {
     async addItem(_, { newItem }, { models: { Item } }) {},
@@ -85,18 +89,18 @@ module.exports = {
       isAuthenitcated,
       async (_, { itemId }, { models: { Item }, currentUser }) => {
         try {
+          // refactor here
           // check if item exists
           const item = await Item.findById(itemId).populate('vendor');
-
+          console.log(item);
           if (!item) {
             return {
               __typename: 'ItemDoesntExistError',
-              message: 'Item you requested to delete does not exist',
+              message: 'Item you requested to does not exist',
               type: 'ItemDoesntExistError',
             };
           }
-          console.log(item, 'item');
-          console.log(item.vendor.email);
+
           // check if current user is item owner
           if (item.vendor.email !== currentUser.email) {
             console.log(item.vendor.email);
@@ -108,6 +112,7 @@ module.exports = {
           }
           // delete item
           await item.delete();
+
           return {
             __typename: 'DeletionSuccess',
             message: 'Item successfully deleted',
@@ -115,6 +120,76 @@ module.exports = {
         } catch (err) {
           return {
             __typename: 'DeleteItemError',
+            type: `${err}`,
+            message: 'Unable to delete please try again',
+          };
+        }
+      },
+    ),
+
+    editItem: combineResolvers(
+      isAuthenitcated,
+      async (
+        _,
+        { updateItem, itemId },
+        { models: { Item }, currentUser },
+      ) => {
+        const { price, description, name, photoUrl } = updateItem;
+        try {
+          // refactor here
+          // check if item exists
+          const item = await Item.findById(itemId).populate('vendor');
+          console.log(item);
+          if (!item) {
+            return {
+              __typename: 'ItemDoesntExistError',
+              message: 'Item you requested to does not exist',
+              type: 'ItemDoesntExistError',
+            };
+          }
+
+          // check if current user is item owner
+          if (item.vendor.email !== currentUser.email) {
+            console.log(item.vendor.email);
+            return {
+              __typename: 'ItemNotOwnerError',
+              type: 'ItemNotOwnerError',
+              message: 'Your are not owner of this item',
+            };
+          }
+          // update item
+          if (price) {
+            item.price = price;
+          }
+
+          if (description) {
+            item.description = description;
+          }
+
+          if (name) {
+            item.name = name;
+          }
+
+          if (photoUrl) {
+            item.photoUrl = photoUrl;
+          }
+          const res = await item.save();
+          return {
+            __typename: 'Item',
+            id: res._doc._id,
+            name: res._doc.name,
+            price: res._doc.price,
+            photoUrl: res._doc.photoUrl,
+            description: res._doc.description,
+            vendor: {
+              firstName: item.vendor.firstName,
+              lastName: item.vendor.lastName,
+              email: item.vendor.email,
+            },
+          };
+        } catch (err) {
+          return {
+            __typename: 'EditItemError',
             type: `${err}`,
             message: 'Unable to delete please try again',
           };
