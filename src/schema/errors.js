@@ -37,4 +37,28 @@ module.exports = gql`
     message: String!
     type: String
   }
+
+  type NotAuthenticatedUserError implements Error {
+    message: String!
+    type: String
+  }
+
+  #item errors
+  type ItemInputErrors implements Error {
+    message: String!
+    type: String
+    itemError: ItemError
+  }
+
+  type ItemError {
+    name: String
+    price: String
+    photoUrl: String
+    description: String
+  }
+
+  type AddItemError implements Error {
+    message: String!
+    type: String
+  }
 `;

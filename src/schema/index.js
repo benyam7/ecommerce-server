@@ -1,6 +1,8 @@
 const { gql } = require('apollo-server');
 const userSchema = require('./user.js');
+const itemSchema = require('./item.js');
 const errorsSchema = require('./errors.js');
+
 const stitchSchema = gql`
   type Query {
     _: Boolean
@@ -11,4 +13,4 @@ const stitchSchema = gql`
   }
 `;
 
-module.exports = [stitchSchema, userSchema, errorsSchema];
+module.exports = [stitchSchema, userSchema, errorsSchema, itemSchema];

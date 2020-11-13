@@ -69,3 +69,41 @@ module.exports.validateLoginInput = (email, password) => {
     valid: Object.keys(userInputErrors).length < 1,
   };
 };
+
+module.exports.validateItemInput = (
+  name,
+  price,
+  photoUrl,
+  description,
+) => {
+  const itemInputErrors = {};
+  if (name.trim() === '') {
+    itemInputErrors.name = 'Name must not be empty';
+  }
+
+  if (description.trim() === '') {
+    itemInputErrors.description = 'Description must not be empty';
+  }
+
+  if (photoUrl.trim() === '') {
+    itemInputErrors.photoUrl = 'Photo url must not be empty';
+  } else {
+    try {
+      new URL(photoUrl);
+    } catch (e) {
+      itemInputErrors.photoUrl = 'Photo url must be a valid url';
+    }
+  }
+
+  if (price <= 0) {
+    itemInputErrors.price = 'Price must be greater that zero';
+  }
+
+  return {
+    __typename: 'ItemInputErrors',
+    type: 'ItemInputErrors',
+    message: 'invalid item value',
+    itemError: itemInputErrors,
+    valid: Object.keys(itemInputErrors).length < 1,
+  };
+};

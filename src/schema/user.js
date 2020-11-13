@@ -15,7 +15,6 @@ module.exports = gql`
     email: String!
     role: String!
     password: String!
-    confirmPassword: String!
   }
 
   #   inputs
