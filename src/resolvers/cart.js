@@ -122,17 +122,31 @@ module.exports = {
           );
           console.log(valid, quantityErrors, 'is valid quantity');
           if (!valid) {
-            return quantityErrors.quantity;
+            return {
+              __typename: 'EditItemQuantityInCartInputError',
+              type: 'EditItemQuantityInCartInputError',
+              message: 'Invalid input!',
+              valid,
+              quantity: quantityErrors.quantity,
+            };
           }
           // find cart
           const cart = await Cart.findById(cartId);
           // check if cart exists
           if (!cart) {
-            return 'cart does not exist';
+            return {
+              __typename: 'EditItemQuantityInCartError',
+              type: 'EditItemQuantityInCartError',
+              message: 'Cart does not exist',
+            };
           }
           // check if current user is owner of the cart
           if (cart.buyer.toString() !== currentUser.id) {
-            return 'You are not the owner of the cart';
+            return {
+              __typename: 'EditItemQuantityInCartError',
+              type: 'EditItemQuantityInCartError',
+              message: 'You are not the owner of the cart',
+            };
           }
           // get specific item from the cart using itemId
           cart.items.map((element) => {
@@ -146,10 +160,16 @@ module.exports = {
           });
           // save the update
           await cart.save();
-          return 'Item quantity updated sucessfully!';
+          return {
+            __typename: 'EditItemQuantityInCartSuccess',
+            message: 'Item quantity updated sucessfully!',
+          };
         } catch (e) {
-          console.log(e);
-          return 'unable to update item quantity ';
+          return {
+            __typename: 'EditItemQuantityInCartError',
+            type: `${e}`,
+            message: 'Unable to update item quantity',
+          };
         }
       },
     ),

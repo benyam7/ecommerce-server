@@ -100,4 +100,16 @@ module.exports = gql`
     message: String!
     type: String
   }
+
+  type EditItemQuantityInCartError implements Error {
+    message: String!
+    type: String
+  }
+
+  type EditItemQuantityInCartInputError implements Error {
+    message: String!
+    type: String
+    valid: Boolean!
+    quantity: String!
+  }
 `;

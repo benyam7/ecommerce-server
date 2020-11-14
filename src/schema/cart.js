@@ -12,7 +12,7 @@ module.exports = gql`
       itemId: ID!
       cartId: ID!
       quantity: Int!
-    ): String!
+    ): EditItemQuantityInCartResult!
   }
 
   #queries
@@ -43,6 +43,10 @@ module.exports = gql`
   type RemoveItemFromCartSuccess {
     message: String!
   }
+
+  type EditItemQuantityInCartSuccess {
+    message: String!
+  }
   # inputs
 
   input CartItemInput {
@@ -60,4 +64,10 @@ module.exports = gql`
       NotAuthenticatedUserError
     | RemoveItemFromCartError
     | RemoveItemFromCartSuccess
+
+  union EditItemQuantityInCartResult =
+      EditItemQuantityInCartSuccess
+    | NotAuthenticatedUserError
+    | EditItemQuantityInCartError
+    | EditItemQuantityInCartInputError
 `;
