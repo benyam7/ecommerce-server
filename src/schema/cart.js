@@ -3,7 +3,10 @@ const { gql } = require('apollo-server');
 module.exports = gql`
   # mutations
   extend type Mutation {
-    addItemsToCart(items: [CartItemInput!]!): AddItemsToCartResult!
+    addItemsToCart(
+      items: [CartItemInput!]!
+      cartId: ID
+    ): AddItemsToCartResult!
     removeItemFromCart(itemId: ID!): RemoveItemFromCartResult!
   }
 
@@ -29,6 +32,7 @@ module.exports = gql`
 
   type CartAdditionSuccess {
     message: String!
+    cartId: String!
   }
 
   type RemoveItemFromCartSuccess {
