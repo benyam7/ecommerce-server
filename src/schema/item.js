@@ -13,7 +13,11 @@ module.exports = gql`
   # queries
   extend type Query {
     item(itemId: ID!): ItemResult!
-    items(cursor: String, limit: Int): ItemsResult!
+    items(
+      cursor: String
+      limit: Int
+      ascending: Boolean!
+    ): ItemsResult!
   }
   #   inputs
   input ItemInput {

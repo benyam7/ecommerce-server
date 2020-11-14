@@ -1,9 +1,6 @@
 const { combineResolvers } = require('graphql-resolvers');
 
-const {
-  isAuthenitcated,
-  isItemOwner,
-} = require('./authorization.js');
+const { isAuthenitcated } = require('./authorization.js');
 const { validateItemInput } = require('../util/validators.js');
 
 module.exports = {
@@ -41,9 +38,17 @@ module.exports = {
 
     items: combineResolvers(
       isAuthenitcated,
-      async (_, { cursor, limit = 10 }, { models: { Item } }) => {
+      async (
+        _,
+        { cursor, limit = 10, ascending },
+        { models: { Item } },
+      ) => {
         try {
-          const items = await Item.find()
+          const direction = ascending ? 1 : -1;
+          const items = await Item.find(/* {
+            createdAt: { $lt: cursor },
+          } */)
+            .sort({ price: direction })
             .limit(limit)
             .populate('vendor');
 
