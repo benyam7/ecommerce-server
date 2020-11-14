@@ -297,7 +297,9 @@ query {
 ```
 
 query {
-  items {
+  items(ascending: false
+    cursor: "2020-11-14T09:03:14.791Z"
+    limit: 2){
     ... on Items {
       items {
         id
@@ -310,6 +312,7 @@ query {
           lastName
           email
         }
+        createdAt
       }
     }
 
@@ -325,6 +328,7 @@ query {
     }
   }
 }
+
 
 ```
 
