@@ -4,7 +4,9 @@ module.exports = gql`
   # mutations
   extend type Mutation {
     addItemsToCart(items: [CartItemInput!]!): AddItemsToCartResult!
+    removeItemFromCart(itemId: ID!): String!
   }
+
   #queries
 
   # custom types
