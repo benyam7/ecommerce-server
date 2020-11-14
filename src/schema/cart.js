@@ -8,6 +8,11 @@ module.exports = gql`
       cartId: ID
     ): AddItemsToCartResult!
     removeItemFromCart(itemId: ID!): RemoveItemFromCartResult!
+    editItemQuantityInCart(
+      itemId: ID!
+      cartId: ID!
+      quantity: Int!
+    ): String!
   }
 
   #queries

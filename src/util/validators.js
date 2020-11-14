@@ -109,3 +109,20 @@ module.exports.validateItemInput = (
     valid: Object.keys(itemInputErrors).length < 1,
   };
 };
+
+module.exports.validateQuantity = (quantity) => {
+  const quantityErrors = {};
+  if (quantity && quantity < 0) {
+    quantityErrors.quantity = 'Quantity must be greater than zero';
+  }
+  return {
+    quantityErrors,
+    valid: Object.keys(quantityErrors).length < 1,
+  };
+  // return {
+  //   __typename: 'QuantityInputError',
+  //   type: 'QuantityInputError',
+  //   qunatityErrors,
+  //   valid: Object.keys(qunatityErrors).length < 1,
+  // };
+};
