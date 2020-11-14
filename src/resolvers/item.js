@@ -45,8 +45,11 @@ module.exports = {
       ) => {
         try {
           const direction = ascending ? 1 : -1;
+          const pageCursor = cursor
+            ? cursor
+            : new Date().toISOString();
           const items = await Item.find({
-            createdAt: { $lt: cursor },
+            createdAt: { $lt: pageCursor },
           })
             .sort({ price: direction })
             .limit(limit)
