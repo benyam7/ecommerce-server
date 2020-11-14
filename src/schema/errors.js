@@ -90,4 +90,10 @@ module.exports = gql`
     message: String!
     type: String
   }
+
+  #cart errors
+  type AddItemsToCartError implements Error {
+    message: String!
+    type: String
+  }
 `;

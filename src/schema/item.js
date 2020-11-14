@@ -13,7 +13,7 @@ module.exports = gql`
   # queries
   extend type Query {
     item(itemId: ID!): ItemResult!
-    items: ItemsResult!
+    items(cursor: String, limit: Int): ItemsResult!
   }
   #   inputs
   input ItemInput {
@@ -36,6 +36,7 @@ module.exports = gql`
     photoUrl: String!
     description: String
     vendor: Vendor!
+    createdAt: String
   }
 
   type Vendor {

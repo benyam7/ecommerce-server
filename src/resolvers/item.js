@@ -41,9 +41,11 @@ module.exports = {
 
     items: combineResolvers(
       isAuthenitcated,
-      async (_, __, { models: { Item } }) => {
+      async (_, { cursor, limit = 10 }, { models: { Item } }) => {
         try {
-          const items = await Item.find().populate('vendor');
+          const items = await Item.find()
+            .limit(limit)
+            .populate('vendor');
 
           return {
             __typename: 'Items',
@@ -104,6 +106,7 @@ module.exports = {
             photoUrl,
             description,
             vendor: currentUser.id,
+            createdAt: new Date().toISOString(),
           });
 
           const res = await item.save();
@@ -117,6 +120,7 @@ module.exports = {
             price: res._doc.price,
             photoUrl: res._doc.photoUrl,
             description: res._doc.description,
+            createdAt: res._doc.createdAt,
             vendor: {
               firstName: vendor.firstName,
               lastName: vendor.lastName,

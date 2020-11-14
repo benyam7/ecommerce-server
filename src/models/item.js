@@ -10,6 +10,7 @@ const itemSchema = new Schema({
     ref: 'User',
     required: true,
   },
+  createdAt: String,
 });
 
 module.exports = model('Item', itemSchema);

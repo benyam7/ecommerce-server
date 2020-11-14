@@ -1,6 +1,7 @@
 const { gql } = require('apollo-server');
 const userSchema = require('./user.js');
 const itemSchema = require('./item.js');
+const cartSchema = require('./cart.js');
 const errorsSchema = require('./errors.js');
 
 const stitchSchema = gql`
@@ -13,4 +14,10 @@ const stitchSchema = gql`
   }
 `;
 
-module.exports = [stitchSchema, userSchema, errorsSchema, itemSchema];
+module.exports = [
+  stitchSchema,
+  userSchema,
+  errorsSchema,
+  itemSchema,
+  cartSchema,
+];
