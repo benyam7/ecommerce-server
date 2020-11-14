@@ -112,4 +112,9 @@ module.exports = gql`
     valid: Boolean!
     quantity: String!
   }
+
+  type CartDetailError implements Error {
+    message: String!
+    type: String
+  }
 `;

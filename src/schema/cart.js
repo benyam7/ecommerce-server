@@ -16,7 +16,9 @@ module.exports = gql`
   }
 
   #queries
-
+  extend type Query {
+    cartDetails(cartId: ID!): CartDetailResult!
+  }
   # custom types
   type Cart {
     id: ID!
@@ -33,6 +35,20 @@ module.exports = gql`
     firstName: String!
     lastName: String!
     email: String!
+  }
+
+  type CartDetail {
+    items: [CartDetailItem!]!
+    totalPrice: Float!
+    totalItems: Int!
+  }
+
+  type CartDetailItem {
+    name: String!
+    price: Float!
+    photoUrl: String!
+    description: String
+    vendor: String!
   }
 
   type CartAdditionSuccess {
@@ -70,4 +86,9 @@ module.exports = gql`
     | NotAuthenticatedUserError
     | EditItemQuantityInCartError
     | EditItemQuantityInCartInputError
+
+  union CartDetailResult =
+      NotAuthenticatedUserError
+    | CartDetailError
+    | CartDetail
 `;

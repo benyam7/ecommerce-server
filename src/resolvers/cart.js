@@ -4,6 +4,83 @@ const { isAuthenitcated } = require('./authorization.js');
 const { validateQuantity } = require('../util/validators.js');
 
 module.exports = {
+  Query: {
+    cartDetails: combineResolvers(
+      isAuthenitcated,
+      async (_, { cartId }, { models: { Cart }, currentUser }) => {
+        try {
+          // populate cart details
+          const cartDetails = await Cart.findById(cartId).populate({
+            path: 'items',
+            populate: {
+              path: 'item',
+              model: 'Item',
+              populate: {
+                path: 'vendor',
+                model: 'User',
+              },
+            },
+          });
+
+          // check if cart exists
+          if (!cartDetails) {
+            return {
+              __typename: 'CartDetailError',
+              type: 'CartDetailError',
+              message: 'Cart does not exist',
+            };
+          }
+
+          // check if current user is owner of cart
+          if (cartDetails.buyer.toString() !== currentUser.id) {
+            return {
+              __typename: 'CartDetailError',
+              type: 'CartDetailError',
+              message: 'You are not owner of this cart',
+            };
+          }
+          // get total items
+          const totalItems = cartDetails.items.length;
+          let totalPrice = 0;
+          // init items n items
+          const items = [];
+          let item = {};
+
+          cartDetails.items.forEach((element, index) => {
+            totalPrice += element.item.price * element.quantity;
+
+            item.price = element.item.price;
+            item.name = element.item.name;
+            item.description = element.item.description;
+            item.photoUrl = element.item.photoUrl;
+            item.vendor =
+              element.item.vendor.firstName +
+              ' ' +
+              element.item.vendor.lastName;
+
+            items[index] = item;
+            item = {};
+          });
+
+          // return cart detials
+          return {
+            __typename: 'CartDetail',
+            totalItems,
+            totalPrice,
+            items,
+          };
+        } catch (e) {
+          return {
+            __typename: 'CartDetailError',
+            type: `${e}`,
+            message:
+              'Unable to get your cart detalis please try again',
+          };
+        }
+      },
+    ),
+  },
+
   Mutation: {
     addItemsToCart: combineResolvers(
       isAuthenitcated,
