@@ -1,6 +1,6 @@
 # Ecommerce server app
 
-# tech stack used
+# Tech stack used
 
 1. Node.js
 2. Express
@@ -11,19 +11,24 @@
 
 _doc/schema/_
 
-open _index.html_ on browsers to get documentation
+open _index.html_ to get documentation
 
-## Get on deployed live link
+## Jump on api using already deployed live link
 
-1. find your self graphiql
+<https://ecommerce--server.herokuapp.com/>
 
-## steps for setup with out docker
+## Steps for using live link
+
+1. download [graphiql](https://www.electronjs.org/apps/graphiql) here
+2. use the above url to interact with api
+
+## Steps for setup with out docker
 
 1. clone the repo
 2. run **npm install**
 3. app will start running at localhost:5000
 
-## steps for setup with docker
+## Steps for setup with docker
 
 1. clone the repo
 2. run **docker-compose up**
