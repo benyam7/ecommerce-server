@@ -258,36 +258,35 @@ mutation {
 ### Get Single Item
 
 ```
-
 query {
-  item(itemId: "5faf008e0ac3556a9024e1ad"){
-    ... on Item {
-      id
-      name
-      price
-      photoUrl
-      description
-      vendor {
-        firstName
-        lastName
-        email
+  items(ascending: false
+    limit: 30){
+    ... on Items {
+      items {
+        id
+        name
+        price
+        photoUrl
+        description
+        vendor {
+          firstName
+          lastName
+          email
+        }
+        createdAt
       }
     }
 
     ... on NotAuthenticatedUserError {
-	message
-    type
-    }
-    ...  on ItemDoesntExistError {
-      message
       type
+      message
     }
 
-    ... on GetItemError {
-      message
-      type
-    }
 
+    ... on GetItemsError {
+      type
+      message
+    }
   }
 }
 
