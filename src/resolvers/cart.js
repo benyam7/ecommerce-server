@@ -30,22 +30,22 @@ module.exports = {
     ),
 
     removeItemFromCart: combineResolvers(
-      // isAuthenitcated,
-      async (
-        _,
-        { itemId },
-        { models: { Cart, Item }, currentUser },
-      ) => {
+      isAuthenitcated,
+      async (_, { itemId }, { models: { Cart }, currentUser }) => {
         try {
-          // find cart by user id this also makesure current user is owner of the cart
+          // find cart by user id this also makesures current user is owner of the cart
           const cart = await Cart.findOne({
-            buyer: '5faef465fdd5dd361cc7cc30',
+            buyer: currentUser.id,
           });
 
           console.log(cart, 'cart to updated');
           // return if cart doesn't exist
           if (!cart) {
-            return "cart dosen't exist";
+            return {
+              __typename: 'RemoveItemFromCartError',
+              type: 'RemoveItemFromCartError',
+              message: "cart dosen't exist",
+            };
           }
           // get the item to be removed by itemId
           const itemIndex = cart.items.findIndex(
@@ -53,17 +53,29 @@ module.exports = {
           );
           // return if item not exists
           if (itemIndex === -1) {
-            return 'item does not exist';
+            return {
+              __typename: 'RemoveItemFromCartError',
+              type: 'RemoveItemFromCartError',
+              message: 'item does not exist',
+            };
           }
 
           // remove item
           cart.items.splice(itemIndex, 1);
           // save updated cart
           await cart.save();
-          return 'item removed succesfully';
+          return {
+            __typename: 'RemoveItemFromCartSuccess',
+            type: 'RemoveItemFromCartSuccess',
+            message: 'item removed succesfully',
+          };
         } catch (e) {
           console.log(e);
-          return 'unable to remove item please try again';
+          return {
+            __typename: 'RemoveItemFromCartError',
+            type: 'RemoveItemFromCartError',
+            message: 'unable to remove item please try again',
+          };
         }
       },
     ),

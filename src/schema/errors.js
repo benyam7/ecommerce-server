@@ -96,4 +96,8 @@ module.exports = gql`
     message: String!
     type: String
   }
+  type RemoveItemFromCartError implements Error {
+    message: String!
+    type: String
+  }
 `;

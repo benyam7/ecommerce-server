@@ -4,7 +4,7 @@ module.exports = gql`
   # mutations
   extend type Mutation {
     addItemsToCart(items: [CartItemInput!]!): AddItemsToCartResult!
-    removeItemFromCart(itemId: ID!): String!
+    removeItemFromCart(itemId: ID!): RemoveItemFromCartResult!
   }
 
   #queries
@@ -30,6 +30,10 @@ module.exports = gql`
   type CartAdditionSuccess {
     message: String!
   }
+
+  type RemoveItemFromCartSuccess {
+    message: String!
+  }
   # inputs
 
   input CartItemInput {
@@ -42,4 +46,9 @@ module.exports = gql`
       CartAdditionSuccess
     | NotAuthenticatedUserError
     | AddItemsToCartError
+
+  union RemoveItemFromCartResult =
+      NotAuthenticatedUserError
+    | RemoveItemFromCartError
+    | RemoveItemFromCartSuccess
 `;
