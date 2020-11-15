@@ -31,10 +31,13 @@ open _index.html_ to get documentation
 ## Steps for setup with docker
 
 1. clone the repo
-2. run **docker-compose up**
-3. app will start running at 0.0.0.0:localhost:5000
+2. inside to project root directory
+3. build image using `docker build -t ecommerce-server . `
+4. run the image using `docker run -p 5000:5000 -d ecommerce-server`
 
 ## here is how to play with it
+
+_also, to save you some time ;)_
 
 ### Register
 
