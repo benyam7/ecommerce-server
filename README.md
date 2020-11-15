@@ -7,7 +7,7 @@
 3. GRAPHQL
 4. Mongo DB
 
-## complete documenation is found in the following directory
+## Complete documenation is found in the following directory
 
 _doc/schema/_
 
@@ -32,8 +32,7 @@ open _index.html_ to get documentation
 
 1. clone the repo
 2. inside to project root directory
-3. build image using `docker build -t ecommerce-server . `
-4. run the image using `docker run -p 5000:5000 -d ecommerce-server`
+3. run `docker-compose up`
 
 ## here is how to play with it
 
