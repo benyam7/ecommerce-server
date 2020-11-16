@@ -49,6 +49,7 @@ module.exports = gql`
     photoUrl: String!
     description: String
     vendor: String!
+    quantity: Int!
   }
 
   type CartAdditionSuccess {

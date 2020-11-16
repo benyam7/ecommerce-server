@@ -57,7 +57,7 @@ module.exports = {
               element.item.vendor.firstName +
               ' ' +
               element.item.vendor.lastName;
-
+            item.quantity = element.quantity;
             items[index] = item;
             item = {};
           });
