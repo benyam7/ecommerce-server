@@ -260,38 +260,38 @@ mutation {
 ### Get Single Item
 
 ```
+
 query {
-  items(ascending: false
-    limit: 30){
-    ... on Items {
-      items {
-        id
-        name
-        price
-        photoUrl
-        description
-        vendor {
-          firstName
-          lastName
-          email
-        }
-        createdAt
+  item(itemId: "5faf008e0ac3556a9024e1ad"){
+    ... on Item {
+      id
+      name
+      price
+      photoUrl
+      description
+      vendor {
+        firstName
+        lastName
+        email
       }
     }
 
     ... on NotAuthenticatedUserError {
-      type
+	message
+    type
+    }
+    ...  on ItemDoesntExistError {
       message
+      type
     }
 
-
-    ... on GetItemsError {
-      type
+    ... on GetItemError {
       message
+      type
     }
+
   }
 }
-
 ```
 
 ### Get all items
